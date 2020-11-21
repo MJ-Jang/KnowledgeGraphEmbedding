@@ -67,6 +67,8 @@ def parse_args(args=None):
     
     parser.add_argument('--nentity', type=int, default=0, help='DO NOT MANUALLY SET')
     parser.add_argument('--nrelation', type=int, default=0, help='DO NOT MANUALLY SET')
+
+    parser.add_argument('--n_workers', type=int, default=0)
     
     return parser.parse_args(args)
 
@@ -241,7 +243,7 @@ def main(args):
             TrainDataset(train_triples, nentity, nrelation, args.negative_sample_size, 'head-batch'), 
             batch_size=args.batch_size,
             shuffle=True, 
-            num_workers=max(1, args.cpu_num//2),
+            num_workers=args.n_workers,
             collate_fn=TrainDataset.collate_fn
         )
         
@@ -249,7 +251,7 @@ def main(args):
             TrainDataset(train_triples, nentity, nrelation, args.negative_sample_size, 'tail-batch'), 
             batch_size=args.batch_size,
             shuffle=True, 
-            num_workers=max(1, args.cpu_num//2),
+            num_workers=args.n_workers,
             collate_fn=TrainDataset.collate_fn
         )
         
